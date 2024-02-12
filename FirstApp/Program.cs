@@ -3,53 +3,30 @@ using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
-    public class Profile
+    public class Player
     {
-        public string Occupation { get; set; }
-
-        public Profile(string occupation)
+        public string Name { get; }
+        public int Number { get; }
+        public Player(string name, int number)
         {
-            Occupation = occupation;
+            Name = name;
+            Number = number;
         }
-
-        protected virtual string GetInfo()
+        public override bool Equals(object obj)
         {
-            return string.Empty;
+            if (obj == null)
+                return false;
+
+            if (GetType() != obj.GetType())
+                return false;
+
+            Player player = (Player)obj;
+
+            return player.Name.Equals(Name) && player.Number.Equals(Number);
         }
-
-        public void Describe()
+        public override int GetHashCode()
         {
-            Console.WriteLine($"{Occupation}, {GetInfo()}");
-        }
-    }
-
-    public class Vacancy : Profile
-    {
-        public int Salary { get; set; }
-
-        public Vacancy(string occupation, int salary) : base(occupation)
-        {
-            Salary = salary;
-        }
-
-        protected override string GetInfo()
-        {
-            return $"Предлагаемая зарплата: {Salary}";
-        }
-    }
-
-    public class Resume : Profile
-    {
-        public int WorkExperience { get; set; }
-
-        public Resume(string occupation, int workExperience) : base(occupation)
-        {
-            WorkExperience = workExperience;
-        }
-
-        protected override string GetInfo()
-        {
-            return $"Стаж работы: {WorkExperience}";
+            return Name.GetHashCode() ^ Number.GetHashCode();
         }
     }
 
@@ -57,19 +34,11 @@ namespace CSharpEssentials
     {
         static void Main()
         {
-            List<Profile> profiles = new List<Profile>
-            {
-                new Vacancy("C# разработчик", 100000),
-                new Vacancy("Python разработчик", 90000),
-                new Vacancy("C++ разработчик", 110000),
-                new Resume("C# разработчик", 4),
-                new Resume("C++ разработчик", 1),
-            };
+            Player player1 = new Player("Sergio Ramos", 4);
+            Player player2 = new Player("Sergio Ramos", 4);
+            Console.WriteLine(player1.Equals(player2));
+            Console.WriteLine(player1.GetHashCode() == player2.GetHashCode());
 
-            foreach (var profile in profiles)
-            {
-                profile.Describe();
-            }
         }
     }
 }

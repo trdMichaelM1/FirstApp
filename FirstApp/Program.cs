@@ -21,29 +21,42 @@ namespace CSharpEssentials
         }
     }
 
-    public class SquareSummator : Summator
+    public class PowerSummator : Summator
     {
+        protected int P { get; set; }
+        public PowerSummator(int p)
+        {
+            P = p;
+        }
+
         protected override int Transform(int i)
         {
-            return i * i;
+            return (int)Math.Pow(i, P);
         }
     }
 
-    public class CubeSummator : Summator
+    public class SquareSummator : PowerSummator
     {
-        protected override int Transform(int i)
-        {
-            return i * i * i;
-        }
+        public SquareSummator() : base(2) { }
     }
-    
+
+    public class CubeSummator : PowerSummator
+    {
+        public CubeSummator() : base(3) { }
+    }
+
     class Program
     {
         static void Main()
         {
             Console.WriteLine(new Summator().Sum(5)); // 15
+            Console.WriteLine(new PowerSummator(1).Sum(5)); // 15
+
             Console.WriteLine(new SquareSummator().Sum(5)); // 55
+            Console.WriteLine(new PowerSummator(2).Sum(5)); // 55
+
             Console.WriteLine(new CubeSummator().Sum(5)); // 225
+            Console.WriteLine(new PowerSummator(3).Sum(5)); // 225
         }
     }
 }

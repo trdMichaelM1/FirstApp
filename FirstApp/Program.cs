@@ -3,60 +3,73 @@ using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
-    public class Summator
+    public class Profile
     {
-        protected virtual int Transform(int i)
+        public string Occupation { get; set; }
+
+        public Profile(string occupation)
         {
-            return i;
+            Occupation = occupation;
         }
 
-        public int Sum(int n)
+        protected virtual string GetInfo()
         {
-            int sum = 0;
-            for (int i = 1; i <= n; i++)
-            {
-                sum += Transform(i);
-            }
-            return sum;
-        }
-    }
-
-    public class PowerSummator : Summator
-    {
-        protected int P { get; set; }
-        public PowerSummator(int p)
-        {
-            P = p;
+            return string.Empty;
         }
 
-        protected override int Transform(int i)
+        public void Describe()
         {
-            return (int)Math.Pow(i, P);
+            Console.WriteLine($"{Occupation}, {GetInfo()}");
         }
     }
 
-    public class SquareSummator : PowerSummator
+    public class Vacancy : Profile
     {
-        public SquareSummator() : base(2) { }
+        public int Salary { get; set; }
+
+        public Vacancy(string occupation, int salary) : base(occupation)
+        {
+            Salary = salary;
+        }
+
+        protected override string GetInfo()
+        {
+            return $"Предлагаемая зарплата: {Salary}";
+        }
     }
 
-    public class CubeSummator : PowerSummator
+    public class Resume : Profile
     {
-        public CubeSummator() : base(3) { }
+        public int WorkExperience { get; set; }
+
+        public Resume(string occupation, int workExperience) : base(occupation)
+        {
+            WorkExperience = workExperience;
+        }
+
+        protected override string GetInfo()
+        {
+            return $"Стаж работы: {WorkExperience}";
+        }
     }
 
     class Program
     {
         static void Main()
         {
-            Console.WriteLine(new Summator().Sum(5)); // 15
-            Console.WriteLine(new PowerSummator(1).Sum(5)); // 15
+            List<Profile> profiles = new List<Profile>
+            {
+                new Vacancy("C# разработчик", 100000),
+                new Vacancy("Python разработчик", 90000),
+                new Vacancy("C++ разработчик", 110000),
+                new Resume("C# разработчик", 4),
+                new Resume("C++ разработчик", 1),
+            };
 
-            Console.WriteLine(new SquareSummator().Sum(5)); // 55
-            Console.WriteLine(new PowerSummator(2).Sum(5)); // 55
-
-            Console.WriteLine(new CubeSummator().Sum(5)); // 225
-            Console.WriteLine(new PowerSummator(3).Sum(5)); // 225
+            foreach (var profile in profiles)
+            {
+                profile.Describe();
+            }
         }
     }
 }

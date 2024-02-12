@@ -3,44 +3,40 @@ using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
-    public class Person
+    public class BaseDate
     {
-        public string Name { get; set; }
-        public int Age { get; set; }
+        public int Year { get; set; }
+        public int Month { get; set; }
+        public int Day { get; set; }
 
-        public virtual string GetInfo()
+        public BaseDate(int year, int month, int day)
         {
-            return $"Имя: {Name}, Возраст: {Age}";
+            Year = year;
+            Month = month;
+            Day = day;
+        }
+
+        public virtual string GetFormat()
+        {
+            return $"год:{Year}, месяц:{Month:00}, день:{Day:00}";
         }
     }
 
-    public class Student : Person
+    public class AmericanDate : BaseDate
     {
-        public int Course { get; set; }
-        public string Profession { get; set; }
-
-        public override string GetInfo()
+        public AmericanDate(int year, int month, int day) : base(year, month, day) { }
+        public override string GetFormat()
         {
-            return $"{base.GetInfo()}, Курс: {Course}, Специальность: {Profession}";
-        }
-
-    }
-    public class ProgrammingStudent : Student
-    {
-        public string ProgrammingLanguage { get; set; }
-
-        public override string GetInfo()
-        {
-            return $"{base.GetInfo()}, язык программирования: {ProgrammingLanguage}";
+            return $"{Month:00}.{Day:00}.{Year}";
         }
     }
 
-    public class Professor : Person
+    public class EuropeanDate : BaseDate
     {
-        public string Subject { get; set; }
-        public override string GetInfo()
+        public EuropeanDate(int year, int month, int day) : base(year, month, day) { }
+        public override string GetFormat()
         {
-            return $"{base.GetInfo()}, предмет: {Subject}";
+            return $"{Day:00}.{Month:00}.{Year}";
         }
     }
 
@@ -48,14 +44,18 @@ namespace CSharpEssentials
     {
         static void Main()
         {
-            List<Person> people = new List<Person>();
-            people.Add(new Student() { Name = "Student1", Age = 21, Course = 1, Profession = "C#" });
-            people.Add(new Professor() { Name = "Professor1", Age = 51, Subject = "Матан" });
-            people.Add(new ProgrammingStudent() { Name = "ProgrammingStudent1", Age = 22, Course = 2, Profession = "ЯП", ProgrammingLanguage = "C#" });
+            BaseDate date = new BaseDate(2021, 3, 24);
+            AmericanDate date1 = new AmericanDate(2021, 3, 24);
+            EuropeanDate date2 = new EuropeanDate(2021, 3, 24);
 
-            foreach (var person in people)
+            List<BaseDate> dates = new List<BaseDate>
             {
-                Console.WriteLine(person.GetInfo());
+                date ,date1, date2
+            };
+
+            foreach (var item in dates)
+            {
+                Console.WriteLine(item.GetFormat());
             }
         }
     }

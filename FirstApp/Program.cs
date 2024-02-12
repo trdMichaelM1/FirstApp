@@ -2,37 +2,21 @@
 
 namespace CSharpEssentials
 {
-    public class Student
-    {
-        public string Password { get; set; } = "Алоомора";
-
-        public void Spell() { }
-    }
-
-    public class GriffindorStudent : Student
-    {
-        public new string Password { get; set; } = "Грата Домум";
-
-        public void BreakRules() { }
-    }
-
-    public class SlytherinStudent : Student
-    {
-        public new string Password { get; set; } = "Чистая кровь";
-
-        public void Cheat() { }
-    }
+    public class Person { }
     class Program
     {
         static void Main()
         {
-            Student stud = new Student();
-            Console.WriteLine(stud.Password);//Алоомора
+            Person person = new Person();
 
-            GriffindorStudent grifStud = new GriffindorStudent();
-            grifStud.BreakRules(); //ничего не выводит
-            Console.WriteLine(grifStud.Password); //Грата Домум
-            Console.WriteLine(((Student)grifStud).Password); //Алоомора
+            object obj = person; // upcasting
+            Console.WriteLine(obj);
+
+            person = obj as Person; // downcasting
+            Console.WriteLine(obj);
+            if (obj is Person)
+                person = (Person)obj; // downcasting
+            Console.WriteLine(obj);
         }
     }
 }

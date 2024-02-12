@@ -3,60 +3,47 @@ using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
-    public class BaseDate
+    public class Summator
     {
-        public int Year { get; set; }
-        public int Month { get; set; }
-        public int Day { get; set; }
-
-        public BaseDate(int year, int month, int day)
+        protected virtual int Transform(int i)
         {
-            Year = year;
-            Month = month;
-            Day = day;
+            return i;
         }
 
-        public virtual string GetFormat()
+        public int Sum(int n)
         {
-            return $"год:{Year}, месяц:{Month:00}, день:{Day:00}";
+            int sum = 0;
+            for (int i = 1; i <= n; i++)
+            {
+                sum += Transform(i);
+            }
+            return sum;
         }
     }
 
-    public class AmericanDate : BaseDate
+    public class SquareSummator : Summator
     {
-        public AmericanDate(int year, int month, int day) : base(year, month, day) { }
-        public override string GetFormat()
+        protected override int Transform(int i)
         {
-            return $"{Month:00}.{Day:00}.{Year}";
+            return i * i;
         }
     }
 
-    public class EuropeanDate : BaseDate
+    public class CubeSummator : Summator
     {
-        public EuropeanDate(int year, int month, int day) : base(year, month, day) { }
-        public override string GetFormat()
+        protected override int Transform(int i)
         {
-            return $"{Day:00}.{Month:00}.{Year}";
+            return i * i * i;
         }
     }
-
+    
     class Program
     {
         static void Main()
         {
-            BaseDate date = new BaseDate(2021, 3, 24);
-            AmericanDate date1 = new AmericanDate(2021, 3, 24);
-            EuropeanDate date2 = new EuropeanDate(2021, 3, 24);
-
-            List<BaseDate> dates = new List<BaseDate>
-            {
-                date ,date1, date2
-            };
-
-            foreach (var item in dates)
-            {
-                Console.WriteLine(item.GetFormat());
-            }
+            Console.WriteLine(new Summator().Sum(5)); // 15
+            Console.WriteLine(new SquareSummator().Sum(5)); // 55
+            Console.WriteLine(new CubeSummator().Sum(5)); // 225
         }
     }
 }

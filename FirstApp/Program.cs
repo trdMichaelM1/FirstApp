@@ -3,39 +3,24 @@ using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
-    public class GeometricArea
+    public class A
     {
-        public double CalculateArea(int r)
+        public static int operator +(A a, A b)
         {
-            return Math.PI * r * r;
+            return 0;
         }
 
-        public double CalculateArea(int a, int b)
+        public static int operator *(A a, string b)
         {
-            return a * b;
-        }
-
-        public double CalculateArea(int a, int b, int c)
-        {
-            double p = (a + b + c) / 2;
-            return Math.Sqrt(p * (p - a) * (p - b) * (p - c));
+            return 0;
         }
     }
+    
     class Program
     {
         static void Main()
         {
-            // Круг
-            GeometricArea circle = new GeometricArea();
-            Console.WriteLine(circle.CalculateArea(3)); // 28,274
-
-            // Прямоугольник
-            GeometricArea rectangle = new GeometricArea();
-            Console.WriteLine(rectangle.CalculateArea(3, 4)); // 12
-
-            // Треугольник
-            GeometricArea triangle = new GeometricArea();
-            Console.WriteLine(triangle.CalculateArea(3, 4, 5)); // 6
+            int a = new A() + new A() + new A() * "abc";
         }
     }
 }

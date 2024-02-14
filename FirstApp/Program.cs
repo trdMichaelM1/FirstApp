@@ -3,24 +3,37 @@ using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
-    public class A
+    public class User
     {
-        public static int operator +(A a, A b)
+        public string Name { get; set; }
+        public int Age { get; set; }
+
+        public User(string name, int age)
         {
-            return 0;
+            Name = name;
+            Age = age;
         }
 
-        public static int operator *(A a, string b)
+        public static bool operator >(User a, User b)
         {
-            return 0;
+            return a.Age > b.Age;
+        }
+
+        public static bool operator <(User a, User b)
+        {
+            return a.Age < b.Age;
         }
     }
-    
+
     class Program
     {
         static void Main()
         {
-            int a = new A() + new A() + new A() * "abc";
+            User user1 = new User("Josef", 25);
+            User user2 = new User("Mark", 26);
+
+            Console.WriteLine(user1 > user2); // False
+            Console.WriteLine(user1 < user2); // True
         }
     }
 }

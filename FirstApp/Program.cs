@@ -3,25 +3,28 @@ using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
-    public class User
+    class Integer
     {
-        public string Name { get; set; }
-        public int Age { get; set; }
+        private int value;
 
-        public User(string name, int age)
+        public Integer(int n)
         {
-            Name = name;
-            Age = age;
+            value = n;
         }
 
-        public static bool operator >(User a, User b)
+        void Print()
         {
-            return a.Age > b.Age;
+            Console.WriteLine($"value: {value}");
         }
 
-        public static bool operator <(User a, User b)
+        public static int operator *(Integer a, int b)
         {
-            return a.Age < b.Age;
+            return a.value * b;
+        }
+
+        public static double operator *(Integer a, double b)
+        {
+            return a.value * b;
         }
     }
 
@@ -29,11 +32,11 @@ namespace CSharpEssentials
     {
         static void Main()
         {
-            User user1 = new User("Josef", 25);
-            User user2 = new User("Mark", 26);
+            Integer integer1 = new Integer(15);
+            Integer integer2 = new Integer(8);
 
-            Console.WriteLine(user1 > user2); // False
-            Console.WriteLine(user1 < user2); // True
+            Console.WriteLine(integer1 * 3); // 45
+            Console.WriteLine(integer2 * 2.5); // 20
         }
     }
 }

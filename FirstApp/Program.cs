@@ -3,42 +3,39 @@ using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
-    public class Player
+    public class GeometricArea
     {
-        public string Name { get; }
-        public int Number { get; }
-        public Player(string name, int number)
+        public double CalculateArea(int r)
         {
-            Name = name;
-            Number = number;
+            return Math.PI * r * r;
         }
-        public override bool Equals(object obj)
+
+        public double CalculateArea(int a, int b)
         {
-            if (obj == null)
-                return false;
-
-            if (GetType() != obj.GetType())
-                return false;
-
-            Player player = (Player)obj;
-
-            return player.Name.Equals(Name) && player.Number.Equals(Number);
+            return a * b;
         }
-        public override int GetHashCode()
+
+        public double CalculateArea(int a, int b, int c)
         {
-            return Name.GetHashCode() ^ Number.GetHashCode();
+            double p = (a + b + c) / 2;
+            return Math.Sqrt(p * (p - a) * (p - b) * (p - c));
         }
     }
-
     class Program
     {
         static void Main()
         {
-            Player player1 = new Player("Sergio Ramos", 4);
-            Player player2 = new Player("Sergio Ramos", 4);
-            Console.WriteLine(player1.Equals(player2));
-            Console.WriteLine(player1.GetHashCode() == player2.GetHashCode());
+            // Круг
+            GeometricArea circle = new GeometricArea();
+            Console.WriteLine(circle.CalculateArea(3)); // 28,274
 
+            // Прямоугольник
+            GeometricArea rectangle = new GeometricArea();
+            Console.WriteLine(rectangle.CalculateArea(3, 4)); // 12
+
+            // Треугольник
+            GeometricArea triangle = new GeometricArea();
+            Console.WriteLine(triangle.CalculateArea(3, 4, 5)); // 6
         }
     }
 }

@@ -2,49 +2,20 @@
 
 namespace CSharpEssentials
 {
-    public class Person
+    public class A
     {
-        public int Age { get; set; }
-        public static int LegalAge { get; set; } = 18;
-        public Person(int age)
+        static A()
         {
-            Age = age;
-        }
-
-        public static void IncreaseLegalAge(int age)
-        {
-            LegalAge += age;
-        }
-
-        public bool IsAdult()
-        {
-            return Age >= LegalAge;
+            Console.WriteLine("Да! Я понял как создавать статический конструктор!");
         }
     }
+    
     
     class Program
     {
         static void Main()
         {
-            Person pers = new Person(18);
-            if (pers.IsAdult())
-            {
-                Console.WriteLine("YES");
-            }
-            else
-            {
-                Console.WriteLine("NO");
-            } // YES
-
-            Person.IncreaseLegalAge(1);
-            if (pers.IsAdult())
-            {
-                Console.WriteLine("YES");
-            }
-            else
-            {
-                Console.WriteLine("NO");
-            } // NO  
+            A a = new A();
         }
     }
 }

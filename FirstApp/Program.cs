@@ -1,30 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
-    class Integer
+    public class User
     {
-        private int value;
+        public string Name { get; set; }
+        public int Age { get; set; }
 
-        public Integer(int n)
+        public User(string name, int age)
         {
-            value = n;
+            Name = name;
+            Age = age;
         }
 
-        void Print()
+        public static explicit operator User(int age)
         {
-            Console.WriteLine($"value: {value}");
+            return new User("Неизвестно", age);
         }
 
-        public static int operator *(Integer a, int b)
+        public static implicit operator int(User user)
         {
-            return a.value * b;
-        }
-
-        public static double operator *(Integer a, double b)
-        {
-            return a.value * b;
+            return user.Age;
         }
     }
 
@@ -32,11 +28,13 @@ namespace CSharpEssentials
     {
         static void Main()
         {
-            Integer integer1 = new Integer(15);
-            Integer integer2 = new Integer(8);
+            int age = 25;
+            User user = (User)age;
+            Console.WriteLine(user.Name + " " + user.Age); // Неизвестно 25
 
-            Console.WriteLine(integer1 * 3); // 45
-            Console.WriteLine(integer2 * 2.5); // 20
+            User user2 = new User("Josef", 26);
+            int age2 = user2;
+            Console.WriteLine(age2); // 26
         }
     }
 }

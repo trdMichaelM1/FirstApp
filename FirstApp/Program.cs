@@ -2,39 +2,47 @@
 
 namespace CSharpEssentials
 {
-    public enum FileFormat
+    public class ProductDb
     {
-        PlainText,
-        OfficeWord,
-        Markdown,
-        Json,
-        XML
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public decimal Cost { get; set; }
+        public string Description { get; set; }
+        public string ImagePath { get; set; }
+    }
+
+    public class ProductViewModel
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public decimal Cost { get; set; }
     }
 
     public static class Helper
     {
-        public static string GetFileExtension(this FileFormat fileFormat)
+        public static ProductViewModel ToProductViewModel(this ProductDb product)
         {
-            string extension = string.Empty;
-            switch (fileFormat)
-            {
-                case FileFormat.PlainText: extension = "txt"; break;
-                case FileFormat.OfficeWord: extension = "docx"; break;
-                case FileFormat.Markdown: extension = "md"; break;
-                case FileFormat.Json: extension = "json"; break;
-                case FileFormat.XML: extension = "xml"; break;
-            }
-            return extension;
+            return new ProductViewModel() { Id = product.Id, Name = product.Name, Cost = product.Cost };
         }
     }
+
     class Program
     {
         static void Main()
         {
-            var format = FileFormat.Markdown;
-            var fileExt = format.GetFileExtension(); // "md"
-            var fileName = $"output.{fileExt}"; // "output.md"
-            Console.WriteLine(fileName);
+            var productDb = new ProductDb()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Молоко",
+                Cost = 120,
+                Description = "Натуральное молоко из деревни",
+                ImagePath = "https://lenta.gcdn.co/globalassets/1/-/10/20/65/346818_2.png?preset=fulllossywhite"
+            };
+
+            ProductViewModel productViewModel = productDb.ToProductViewModel();
+
+            Console.WriteLine(productViewModel.Name); // Молоко
+            Console.WriteLine(productViewModel.Cost); // 120
         }
     }
 }

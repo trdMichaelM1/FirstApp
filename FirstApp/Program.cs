@@ -1,21 +1,25 @@
 ﻿using System;
 
 namespace CSharpEssentials
-{
-    public class A
+{    
+    public static class StringHelpers
     {
-        static A()
+        public static int CountWords(this string s)
         {
-            Console.WriteLine("Да! Я понял как создавать статический конструктор!");
+            s = s.Replace("-", " ");
+            string[] words = s.Split(new char[] { ' ', '.', '?', '!', ':' }, StringSplitOptions.RemoveEmptyEntries);
+            return words.Length;
         }
     }
-    
-    
     class Program
     {
         static void Main()
         {
-            A a = new A();
+            var sentence = "Я люблю программировать! Я стану великим программистом.";
+
+            var wordsCount = sentence.CountWords();
+
+            Console.WriteLine(wordsCount);
         }
     }
 }

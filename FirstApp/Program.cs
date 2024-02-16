@@ -7,46 +7,62 @@ namespace CSharpEssentials
     {
         static void Main()
         {
-            // Получение информации о файле
-            string path = @"C:\TestFiles\test1.txt";
-            FileInfo fileInf = new FileInfo(path);
-            if (fileInf.Exists)
+            // создаем каталог для файла
+            string path = @"C:\TestDir";
+            DirectoryInfo dirInfo = new DirectoryInfo(path);
+            if (!dirInfo.Exists)
             {
-                Console.WriteLine("Имя файла: {0}", fileInf.Name);
-                Console.WriteLine("Время создания: {0}", fileInf.CreationTime);
-                Console.WriteLine("Размер: {0}", fileInf.Length);
+                dirInfo.Create();
+            }
+            Console.WriteLine("Введите строку для записи в файл:");
+            string text = Console.ReadLine();
+
+            // запись в файл
+            using (FileStream fstream = new FileStream($@"{path}\note.txt", FileMode.OpenOrCreate))
+            {
+                // преобразуем строку в байты
+                byte[] array = System.Text.Encoding.Default.GetBytes(text);
+                // запись массива байтов в файл
+                fstream.Write(array, 0, array.Length);
+                Console.WriteLine("Текст записан в файл");
             }
 
-            // Удаление файла
-            path = @"C:\TestFiles\test1.txt";
-            fileInf = new FileInfo(path);
-            if (fileInf.Exists)
+            // чтение из файла
+            using (FileStream fstream = File.OpenRead($@"{path}\note.txt"))
             {
-                fileInf.Delete();
-                // альтернатива с помощью класса File
+                // преобразуем строку в байты
+                byte[] array = new byte[fstream.Length];
+                // считываем данные
+                fstream.Read(array, 0, array.Length);
+                // декодируем байты в строку
+                string textFromFile = System.Text.Encoding.Default.GetString(array);
+                Console.WriteLine($"Текст из файла: {textFromFile}");
             }
 
-            // Перемещение файла
-            path = @"C:\TestFiles\test1.txt";
-            string newPath = @"C:\TestFiles\test2\test1.txt";
-            fileInf = new FileInfo(path);
-            if (fileInf.Exists)
+            // StreamWriter
+            string writePath = @"";
+
+             text = "Привет мир!\n Hello world";
+            using (StreamWriter sw = new StreamWriter(writePath, false, System.Text.Encoding.Default))
             {
-                fileInf.MoveTo(newPath);
-                // альтернатива с помощью класса File
-                // File.Move(path, newPath);
+                sw.WriteLine(text);
             }
 
+             writePath = @"";
 
-            // Копирование файла
-            path = @"";
-            newPath = @"";
-            fileInf = new FileInfo(path);
-            if (fileInf.Exists)
+             text = "Привет мир!\n Hello world";
+            using (StreamWriter sw = new StreamWriter(writePath, true, System.Text.Encoding.Default))
             {
-                fileInf.CopyTo(newPath, true);
-                // альтернатива с помощью класса File
-                // File.Copy(path, newPath, true);
+                sw.WriteLine("Дозапись");
+                sw.Write(4.5);
+            }
+
+            //StreamReader
+             path = @"";
+
+            using (StreamReader sr = new StreamReader(path))
+            {
+                Console.WriteLine(sr.ReadToEnd());
             }
         }
     }

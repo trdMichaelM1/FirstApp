@@ -2,28 +2,49 @@
 
 namespace CSharpEssentials
 {
-    public class Point
+    public class Person
     {
-        public int X { get; }
-        public int Y { get; }
-        public Point(int x, int y)
+        public int Age { get; set; }
+        public static int LegalAge { get; set; } = 18;
+        public Person(int age)
         {
-            X = x;
-            Y = y;
+            Age = age;
         }
 
-        public static double LengthPoints(Point first, Point second)
+        public static void IncreaseLegalAge(int age)
         {
-            return Math.Sqrt(Math.Pow((second.X - first.X), 2) + Math.Pow((second.Y - first.Y), 2));
+            LegalAge += age;
+        }
+
+        public bool IsAdult()
+        {
+            return Age >= LegalAge;
         }
     }
+    
     class Program
     {
         static void Main()
         {
-            Point point1 = new Point(1, 5);
-            Point point2 = new Point(5, 5);
-            Console.WriteLine(Point.LengthPoints(point1, point2)); // 4
+            Person pers = new Person(18);
+            if (pers.IsAdult())
+            {
+                Console.WriteLine("YES");
+            }
+            else
+            {
+                Console.WriteLine("NO");
+            } // YES
+
+            Person.IncreaseLegalAge(1);
+            if (pers.IsAdult())
+            {
+                Console.WriteLine("YES");
+            }
+            else
+            {
+                Console.WriteLine("NO");
+            } // NO  
         }
     }
 }

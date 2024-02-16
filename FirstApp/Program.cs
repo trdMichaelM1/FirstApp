@@ -1,25 +1,40 @@
 ﻿using System;
 
 namespace CSharpEssentials
-{    
-    public static class StringHelpers
+{
+    public enum FileFormat
     {
-        public static int CountWords(this string s)
+        PlainText,
+        OfficeWord,
+        Markdown,
+        Json,
+        XML
+    }
+
+    public static class Helper
+    {
+        public static string GetFileExtension(this FileFormat fileFormat)
         {
-            s = s.Replace("-", " ");
-            string[] words = s.Split(new char[] { ' ', '.', '?', '!', ':' }, StringSplitOptions.RemoveEmptyEntries);
-            return words.Length;
+            string extension = string.Empty;
+            switch (fileFormat)
+            {
+                case FileFormat.PlainText: extension = "txt"; break;
+                case FileFormat.OfficeWord: extension = "docx"; break;
+                case FileFormat.Markdown: extension = "md"; break;
+                case FileFormat.Json: extension = "json"; break;
+                case FileFormat.XML: extension = "xml"; break;
+            }
+            return extension;
         }
     }
     class Program
     {
         static void Main()
         {
-            var sentence = "Я люблю программировать! Я стану великим программистом.";
-
-            var wordsCount = sentence.CountWords();
-
-            Console.WriteLine(wordsCount);
+            var format = FileFormat.Markdown;
+            var fileExt = format.GetFileExtension(); // "md"
+            var fileName = $"output.{fileExt}"; // "output.md"
+            Console.WriteLine(fileName);
         }
     }
 }

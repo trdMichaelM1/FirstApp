@@ -2,39 +2,28 @@
 
 namespace CSharpEssentials
 {
-    public class User
+    public class Point
     {
-        public string Name { get; set; }
-        public int Age { get; set; }
-
-        public User(string name, int age)
+        public int X { get; }
+        public int Y { get; }
+        public Point(int x, int y)
         {
-            Name = name;
-            Age = age;
+            X = x;
+            Y = y;
         }
 
-        public static explicit operator User(int age)
+        public static double LengthPoints(Point first, Point second)
         {
-            return new User("Неизвестно", age);
-        }
-
-        public static implicit operator int(User user)
-        {
-            return user.Age;
+            return Math.Sqrt(Math.Pow((second.X - first.X), 2) + Math.Pow((second.Y - first.Y), 2));
         }
     }
-
     class Program
     {
         static void Main()
         {
-            int age = 25;
-            User user = (User)age;
-            Console.WriteLine(user.Name + " " + user.Age); // Неизвестно 25
-
-            User user2 = new User("Josef", 26);
-            int age2 = user2;
-            Console.WriteLine(age2); // 26
+            Point point1 = new Point(1, 5);
+            Point point2 = new Point(5, 5);
+            Console.WriteLine(Point.LengthPoints(point1, point2)); // 4
         }
     }
 }

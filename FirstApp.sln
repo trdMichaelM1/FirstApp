@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArraysCollections", "Arrays
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadWriteFile", "ReadWriteFile\ReadWriteFile.csproj", "{E34BE03D-22AB-4F18-BE65-6D9A309A1809}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A_OOP", "A_OOP\A_OOP.csproj", "{6EC13761-02DC-47C6-8534-4B0E5FCBBAFA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{E34BE03D-22AB-4F18-BE65-6D9A309A1809}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E34BE03D-22AB-4F18-BE65-6D9A309A1809}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E34BE03D-22AB-4F18-BE65-6D9A309A1809}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EC13761-02DC-47C6-8534-4B0E5FCBBAFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EC13761-02DC-47C6-8534-4B0E5FCBBAFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EC13761-02DC-47C6-8534-4B0E5FCBBAFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EC13761-02DC-47C6-8534-4B0E5FCBBAFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

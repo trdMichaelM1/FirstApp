@@ -1,78 +1,73 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
-    public class Furniture
+    public struct Money
     {
-        public int Height { get; set; }
-        public int Width { get; set; }
-        public string Name { get; set; }
-        public string Manufacturer { get; set; }
-        public int Price { get; set; }
-        public string Type { get; set; }
-        public bool InStock { get; set; }
+        public int Ruble { get; set; }
+        private int _kopech;
+        public int Kopeck
+        {
+            get
+            {
+                return _kopech;
+            }
+            set
+            {
+                if (value < 0 || value > 99)
+                    throw new Exception();
+                _kopech = value;
+            }
+        }
+
+        public Money(int ruble, int kopeck)
+        {
+            _kopech = 0;
+            Ruble = ruble;
+            Kopeck = kopeck;
+        }
+
+        public override string ToString()
+        {
+            return $"{Ruble}, {Kopeck:00}";
+        }
+
+        public static Money operator +(Money a, Money b)
+        {
+            int rub = (a.Ruble * 100 + a.Kopeck) + (b.Ruble * 100 + b.Kopeck);
+            return new Money(rub / 100, rub % 100);
+        }
+
+        public static Money operator -(Money a, Money b)
+        {
+            int rub = (a.Ruble * 100 + a.Kopeck) - (b.Ruble * 100 + b.Kopeck);
+            return new Money(rub / 100, Math.Abs(rub % 100));
+        }
     }
     class Program
     {
         static void Main()
         {
-            var allFurniture = new List<Furniture>{
-                new Furniture{
-                    Height = 100,
-                    Width = 50,
-                    Type = "Chair",
-                    Name = "A-234-c",
-                    Manufacturer = "FamousChairManufacturer",
-                    Price = 5000,
-                    InStock = true
-                },
-                new Furniture{
-                    Height = 90,
-                    Width = 60,
-                    Type = "Table",
-                    Name = "T-75",
-                    Manufacturer = "YourTables",
-                    Price = 10000,
-                    InStock = true
-                },
-                new Furniture{
-                    Height = 80,
-                    Width = 70,
-                    Type = "Sofa",
-                    Name = "S-17-56",
-                    Manufacturer = "NotSoFamousSofaManufacturer",
-                    Price = 15999,
-                    InStock = false
-                },
-                new Furniture{
-                    Height = 92,
-                    Width = 100,
-                    Type = "Chair",
-                    Name = "A-238-ch",
-                    Manufacturer = "FamousChairManufacturer",
-                    Price = 6000, InStock = true
-                },
-                new Furniture{
-                    Height = 103,
-                    Width = 73,
-                    Type = "Closet",
-                    Name = "C-32-32",
-                    Manufacturer = "ClosetMaker",
-                    Price = 23000,
-                    InStock = true
-                }
-            };
+            //Money money1 = new Money(10, 50);
+            //Console.WriteLine(money1); // 10, 50
 
-            var closets = new List<object>();
-            foreach (var furnitureElement in allFurniture)
-            {
-                if (furnitureElement.Type == "Closet")
-                {
-                    var exemplar = new { Height = furnitureElement.Height, Width = furnitureElement.Width };
-                    closets.Add(exemplar);
-                }
-            }
+            //money1.Ruble = 4;
+            //money1.Kopeck = 5;
+            //Console.WriteLine(money1); // 4, 05
+
+            //money1.Kopeck = 100; // ошибка
+
+            Money money1 = new Money(11, 51);
+            Money money2 = new Money(25, 90);
+
+            Money money3 = money1 + money2;
+            Console.WriteLine(money3); // 37, 41
+
+            Money money4 = money3 - money2;
+            Console.WriteLine(money4); // 11, 51
+
+            Money money5 = money1 - money2;
+            Console.WriteLine(money5); // -14, 39
         }
     }
 }

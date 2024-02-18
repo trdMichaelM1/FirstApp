@@ -2,30 +2,32 @@
 
 namespace CSharpEssentials
 {
-    public class UserProfile
+    public class Company
     {
         public string Name { get; set; }
-        public string Gender { get; set; }
-        public string Country { get; set; }
 
-        public UserProfile(string name)
+        public Company(string name)
         {
             Name = name;
-        }
-
-        public void DisplayUserInfo()
-        {
-            Console.WriteLine($"Имя: {Name}");
-            Console.WriteLine($"Пол: {Gender ?? "Пол не указан"}");
-            Console.WriteLine($"Страна: {Country ?? "Страна не указана"}");
         }
     }
     class Program
     {
+        static void Print(Company company)
+        {
+            //if (company == null || company.Name == null)
+            //{
+            //    Console.WriteLine("Неизвестное имя");
+            //}
+            //else
+            //{
+            //    Console.WriteLine(company.Name);
+            //}
+            Console.WriteLine(company?.Name ?? "Неизвестное имя");
+        }
         static void Main()
         {
-            UserProfile usProf = new UserProfile("Алина") { Gender = "Жен" };
-            usProf.DisplayUserInfo();
+
         }
     }
 }

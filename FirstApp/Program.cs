@@ -2,15 +2,22 @@
 
 namespace CSharpEssentials
 {
+
     class Program
     {
+        public static void PrintArray<T>(T[] array)
+        {
+            foreach(T t in array)
+            {
+                Console.WriteLine(t);
+            }
+        }
+
         static void Main()
         {
-            int x = 7;
-            object y = x;
-            //long l = (long)(int)y;
-            long l = (int)y;
-            Console.WriteLine(y);
+            string[] names = { "Josef", "Vadim", "Ivan" };
+            PrintArray(names);
+
         }
     }
 }

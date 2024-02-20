@@ -1,48 +1,38 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Text;
+using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
     class Program
     {
-        private delegate void MeasureMethod(int repeatCount);
+        delegate bool Predicate(int number);
         private static void Main()
         {
-            //MeasureMethod method = MeasureString;
-            //Measure(method);
-            Measure(MeasureString);
-            //method = MeasureStringBuilder;
-            //Measure(method);
-            Measure(MeasureStringBuilder);
-        }
+            List<int> years = new List<int> { 13, 17, 18, 19, 20, 50 };
+            List<int> adults = GetAdults(years, IsAdult);
 
-        private static void Measure(MeasureMethod method)
-        {
-            int repeatCount = 10000;
-            Stopwatch time = Stopwatch.StartNew();
-            //method(repeatCount);
-            method?.Invoke(repeatCount);
-            time.Stop();
-            Console.WriteLine(time.Elapsed.TotalMilliseconds);
-        }
-
-        private static void MeasureStringBuilder(int repeatCount)
-        {
-            StringBuilder stringBuilderResult = new StringBuilder("Test");
-            for (int i = 0; i < repeatCount; i++)
+            foreach (var adult in adults)
             {
-                stringBuilderResult.Append($"{i}");
+                Console.WriteLine(adult);
             }
         }
 
-        private static void MeasureString(int repeatCount)
+        static bool IsAdult(int age)
         {
-            string stringResult = "Test";
-            for (int i = 0; i < repeatCount; i++)
+            if (age >= 18)
+                return true;
+            return false;
+        }
+
+        static List<int> GetAdults(List<int> list, Predicate predicate)
+        {
+            List<int> result = new List<int>();
+            foreach (int item in list)
             {
-                stringResult += $"{i}";
+                if (predicate(item))
+                    result.Add(item);
             }
+            return result;
         }
     }
 }

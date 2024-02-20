@@ -3,36 +3,65 @@ using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
+    public class User
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
+
+        public User(string name, int age)
+        {
+            Name = name;
+            Age = age;
+        }
+
+        public override string ToString()
+        {
+            return $"{Name}, {Age}";
+        }
+    }
+
     class Program
     {
-        delegate bool Predicate(int number);
-        private static void Main()
-        {
-            List<int> years = new List<int> { 13, 17, 18, 19, 20, 50 };
-            List<int> adults = GetAdults(years, IsAdult);
+        // шаблон правила
+        delegate void Rule(User user);
 
-            foreach (var adult in adults)
-            {
-                Console.WriteLine(adult);
-            }
+        // правило-метод LongNameRule
+        private static void LongNameRule(User user)
+        {
+            if (user.Name.Length > 10)
+                user.Name = user.Name.Substring(0, 10);
         }
 
-        static bool IsAdult(int age)
+        private static void IncreaseAge(User user)
         {
-            if (age >= 18)
-                return true;
-            return false;
+            user.Age++;
         }
 
-        static List<int> GetAdults(List<int> list, Predicate predicate)
+        private static List<User> TransformUsersByRule(List<User> users, Rule rule)
         {
-            List<int> result = new List<int>();
-            foreach (int item in list)
+            foreach (var user in users)
             {
-                if (predicate(item))
-                    result.Add(item);
+                rule(user);
             }
-            return result;
+            return users;
+        }
+
+        static void Main()
+        {
+            List<User> users = new List<User>
+            {
+                new User("namenamename", 25),
+                new User("1234567890", 34),
+                new User("123456", 14),
+            };
+
+            List<User> transformedUsers = TransformUsersByRule(users, LongNameRule);
+            transformedUsers = TransformUsersByRule(users, IncreaseAge);
+
+            foreach (var user in transformedUsers)
+            {
+                Console.WriteLine(user);
+            }
         }
     }
 }

@@ -1,35 +1,48 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
 
 namespace CSharpEssentials
 {
     class Program
     {
-        public static void Reverse<T>(List<T> list)
+        private delegate void MeasureMethod(int repeatCount);
+        private static void Main()
         {
-            int left = 0;
-            int right = list.Count - 1;
+            //MeasureMethod method = MeasureString;
+            //Measure(method);
+            Measure(MeasureString);
+            //method = MeasureStringBuilder;
+            //Measure(method);
+            Measure(MeasureStringBuilder);
+        }
 
-            while (left < right)
+        private static void Measure(MeasureMethod method)
+        {
+            int repeatCount = 10000;
+            Stopwatch time = Stopwatch.StartNew();
+            //method(repeatCount);
+            method?.Invoke(repeatCount);
+            time.Stop();
+            Console.WriteLine(time.Elapsed.TotalMilliseconds);
+        }
+
+        private static void MeasureStringBuilder(int repeatCount)
+        {
+            StringBuilder stringBuilderResult = new StringBuilder("Test");
+            for (int i = 0; i < repeatCount; i++)
             {
-                T temp = list[left];
-                list[left] = list[right];
-                list[right] = temp;
-
-                left++;
-                right--;
+                stringBuilderResult.Append($"{i}");
             }
         }
 
-        static void Main()
+        private static void MeasureString(int repeatCount)
         {
-            List<int> numbers = new List<int> { 1, 2, 3, 4, 5 };
-            Reverse(numbers);
-            Console.WriteLine(string.Join(", ", numbers));  // 5, 4, 3, 2, 1
-
-            List<string> names = new List<string> { "Josef", "Vadim", "Ivan" };
-            Reverse(names);
-            Console.WriteLine(string.Join(", ", names));  // Ivan, Vadim, Josef
+            string stringResult = "Test";
+            for (int i = 0; i < repeatCount; i++)
+            {
+                stringResult += $"{i}";
+            }
         }
     }
 }

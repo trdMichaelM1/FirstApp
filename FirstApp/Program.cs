@@ -1,29 +1,35 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
-
     class Program
     {
-        public static int FindOccurrencesCount<T>(T[] array, T item)
+        public static void Reverse<T>(List<T> list)
         {
-            int count = 0;
-            for (int i = 0; i < array.Length; i++)
+            int left = 0;
+            int right = list.Count - 1;
+
+            while (left < right)
             {
-                if (array[i].Equals(item))
-                    count++;
+                T temp = list[left];
+                list[left] = list[right];
+                list[right] = temp;
+
+                left++;
+                right--;
             }
-            return count;
         }
+
         static void Main()
         {
-            int[] numbers = { 1, 2, 3, 2, 4, 2 };
-            int occurrences = FindOccurrencesCount(numbers, 2);
-            Console.WriteLine(occurrences);   // 3
+            List<int> numbers = new List<int> { 1, 2, 3, 4, 5 };
+            Reverse(numbers);
+            Console.WriteLine(string.Join(", ", numbers));  // 5, 4, 3, 2, 1
 
-            string[] names = { "Josef", "Vadim", "Josef", "Ivan" };
-            int occurrences2 = FindOccurrencesCount(names, "Josef");
-            Console.WriteLine(occurrences2);  // 2
+            List<string> names = new List<string> { "Josef", "Vadim", "Ivan" };
+            Reverse(names);
+            Console.WriteLine(string.Join(", ", names));  // Ivan, Vadim, Josef
         }
     }
 }

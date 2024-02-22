@@ -1,29 +1,58 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
+    public class Product
+    {
+        public string Name;
+        public decimal Price;
+        public string Category;
+
+        public Product(string name, decimal cost, string category)
+        {
+            Name = name;
+            Price = cost;
+            Category = category;
+        }
+    }
     class Program
     {
-        delegate void MyDelegate();
-
-        private static void Method1()
+        static void Main()
         {
-            Console.Write("Hello");
+            List<Product> products = new List<Product>()
+            {
+                new Product("product1", 10, "furniture"),
+                new Product("product2", 100, "toy"),
+                new Product("product3", 1000, "toy"),
+                new Product("product4", 10000, "toy"),
+                new Product("product5", 100000, "furniture")
+            };
+
+            SelectAndChangePrice(products, "toy", 10, SelectCategory, IncreasePrices);
+
+            foreach (Product product in products)
+            {
+                Console.WriteLine($"{product.Name} - {product.Category} - {product.Price}");
+            }
         }
 
-        private static void Method2()
+        static void SelectAndChangePrice(List<Product> products, string category, int n,
+            Func<Product, string, bool> selectCategory, Action<Product, int> increasePrices)
         {
-            Console.Write("Hi");
+            foreach (Product product in products)
+            {
+                if (selectCategory(product, category))
+                    increasePrices(product, n);
+            }
         }
-
-        static void Main(string[] args)
+        static void IncreasePrices(Product product, int n)
         {
-            MyDelegate myDelegate = Method1;
-            myDelegate += Method2;
-            myDelegate -= Method1;
-            myDelegate -= Method2;
-
-            myDelegate?.Invoke();
+            product.Price = product.Price * (1 + n / 100M);
+        }
+        static bool SelectCategory(Product product, string category)
+        {
+            return product.Category.Equals(category);
         }
     }
 }

@@ -3,42 +3,50 @@ using System.Collections.Generic;
 
 namespace Stepik
 {
-
-    public class User
+    public class School
     {
-        public string Name { get; set; }
-        public int Age { get; set; }
+        public List<Student> Students;
+
+        public int Count(Func<Student, bool> filter)
+        {
+            int count = 0;
+            foreach (Student student in Students)
+            {
+                if(filter(student))
+                    count++;
+            }
+            return count;
+        }
+    }
+
+    public class Student
+    {
+        public readonly string FIO;
+        public readonly int Grade;
+        public readonly double Performance;
+
+        public Student(string fio, int grade, double performance)
+        {
+            FIO = fio;
+            Grade = grade;
+            Performance = performance;
+        }
     }
 
     class Program
     {
         static void Main(string[] args)
         {
-            List<User> users = new List<User>
+            School school = new School();
+            school.Students = new List<Student>()
             {
-                new User { Name = "Alice", Age = 25 },
-                new User { Name = "Bob", Age = 30 },
-                new User { Name = "Charlie", Age = 35 }
+                new Student("Багаев Аслан", 10, 4.3),
+                new Student("Абаев Георгий", 8, 5),
+                new Student("Дзуцев Михаил", 2, 3.8),
+                new Student("Елоев Сармат", 11, 4.6)
             };
-
-            List<User> filteredUsers = FilterUsers(users, u => u.Age > 25);
-
-            foreach (var user in filteredUsers)
-            {
-                Console.WriteLine($"{user.Name} - {user.Age}");
-            }
-        }
-        static List<User> FilterUsers(List<User> users, Func<User, bool> filterCriteria)
-        {
-            List<User> filteredUsers = new List<User>();
-            foreach (var user in users)
-            {
-                if (filterCriteria(user))
-                {
-                    filteredUsers.Add(user);
-                }
-            }
-            return filteredUsers;
+            Console.WriteLine(school.Count(x => x.Grade > 2)); // 3
+            Console.WriteLine(school.Count(x => x.FIO.Contains("Багаев"))); // 1
         }
     }
 }

@@ -3,56 +3,27 @@ using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
-    public class Product
-    {
-        public string Name;
-        public decimal Price;
-        public string Category;
-
-        public Product(string name, decimal cost, string category)
-        {
-            Name = name;
-            Price = cost;
-            Category = category;
-        }
-    }
     class Program
     {
         static void Main()
         {
-            List<Product> products = new List<Product>()
+            Func<int, bool> predicate = item =>
             {
-                new Product("product1", 10, "furniture"),
-                new Product("product2", 100, "toy"),
-                new Product("product3", 1000, "toy"),
-                new Product("product4", 10000, "toy"),
-                new Product("product5", 100000, "furniture")
+                return item * item % 10 == 9 ? true : false;
             };
 
-            SelectAndChangePrice(products, "toy", 10, SelectCategory, IncreasePrices);
-
-            foreach (Product product in products)
-            {
-                Console.WriteLine($"{product.Name} - {product.Category} - {product.Price}");
-            }
+            Print(new List<int> { 1, 2, 3, 4, 5, 7, 13, 27 }, predicate);
         }
 
-        static void SelectAndChangePrice(List<Product> products, string category, int n,
-            Func<Product, string, bool> selectCategory, Action<Product, int> increasePrices)
+        static void Print(List<int> items, Func<int, bool> predicate)
         {
-            foreach (Product product in products)
+            foreach (var item in items)
             {
-                if (selectCategory(product, category))
-                    increasePrices(product, n);
+                if (predicate(item))
+                {
+                    Console.Write(item + " ");
+                }
             }
-        }
-        static void IncreasePrices(Product product, int n)
-        {
-            product.Price = product.Price * (1 + n / 100M);
-        }
-        static bool SelectCategory(Product product, string category)
-        {
-            return product.Category.Equals(category);
         }
     }
 }

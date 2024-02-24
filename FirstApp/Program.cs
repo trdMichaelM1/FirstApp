@@ -2,13 +2,24 @@
 
 namespace CSharpEssentials
 {
+    public class SetAgeEventArgs : EventArgs
+    {
+        public string Message { get; }
+
+        public SetAgeEventArgs(string message)
+        {
+            Message = message;
+        }
+    }
+
     public class User
     {
         private string name;
         private int age;
 
-        public event Action<string> MessageHandler;
-        
+        //public event Action<string> MessageHandler;
+        public event EventHandler<SetAgeEventArgs> MessageHandler;
+
         public void SetAge(string input)
         {
             if (int.TryParse(input, out int age))
@@ -16,16 +27,16 @@ namespace CSharpEssentials
                 if (age > 18 && age < 100)
                 {
                     this.age = age;
-                    MessageHandler?.Invoke("Возраст записан");
+                    MessageHandler?.Invoke(this, new SetAgeEventArgs("Возраст записан"));
                 }
                 else
                 {
-                    MessageHandler?.Invoke("Возраст должен быть числом между 18 и 100");
+                    MessageHandler?.Invoke(this, new SetAgeEventArgs("Возраст должен быть числом между 18 и 100"));
                 }
             }
             else
             {
-                MessageHandler?.Invoke("Возраст должен быть числом");
+                MessageHandler?.Invoke(this, new SetAgeEventArgs("Возраст должен быть числом"));
             }
         }
     }
@@ -36,17 +47,27 @@ namespace CSharpEssentials
             User user = new User();
             user.MessageHandler += ShowOnConsole;
             user.MessageHandler += SendEmail;
+            user.MessageHandler += User_MessageHandler;
             user.SetAge(Console.ReadLine());
         }
 
-        private static void ShowOnConsole(string message)
+        private static void User_MessageHandler(object sender, SetAgeEventArgs e)
         {
-            Console.WriteLine(message);
         }
 
-        private static void SendEmail(string message)
+        private static void ShowOnConsole(object sender, SetAgeEventArgs e)
         {
-            Console.WriteLine($"Send an emain \"{message}\"");
+            Console.WriteLine($"Консоль: {e.Message}");
+        }
+
+        private static void SendEmail(object sender, SetAgeEventArgs e)
+        {
+            Console.WriteLine($"Почта: {e.Message}");
+        }
+
+        private static void SendSms(object sender, SetAgeEventArgs e)
+        {
+            Console.WriteLine($"Смс: {e.Message}");
         }
     }
 }

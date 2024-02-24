@@ -3,97 +3,45 @@ using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
-    public static class CodeGenerator
+    public class ButtonClickedEventArgs : EventArgs
     {
-        public static int Get()
-        {
-            return new Random().Next(1000, 9999);
-        }
-    }
-    public class User
-    {
-        public string Name;
-        public string Email;
-        public string Password;
+        public string Location { get; }
+        public int Number { get; }
 
-        public User(string name, string email, string password)
+        public ButtonClickedEventArgs(string identity)
         {
-            Name = name;
-            Email = email;
-            Password = password;
+            string[] strings = identity.Split('#');
+            Location = strings[0];
+            Number = Convert.ToInt32(strings[1]);
         }
     }
 
-    public class UserRegisteredEventArgs : EventArgs
+    public class Button
     {
-        public string Email { get; }
+        private string identity;
+        public event EventHandler<ButtonClickedEventArgs> ClickHandler;
 
-        public UserRegisteredEventArgs(string email)
+        public Button(string identity)
         {
-            Email = email;
+            this.identity = identity;
+        }
+
+        public void Clicked()
+        {
+            ClickHandler?.Invoke(null, new ButtonClickedEventArgs(identity));
         }
     }
 
-    public class UserManager
+    public class Door
     {
-        public List<User> Users { get; } = new List<User>();
-        public event EventHandler<UserRegisteredEventArgs> UserRegistered;
-
-        public void Register(User user)
+        private void Open(object sender, ButtonClickedEventArgs e)
         {
-            Users.Add(user);
-            UserRegistered?.Invoke(this, new UserRegisteredEventArgs(user.Email));
-        }
-    }
-
-    public class TwoFactorAuthentication
-    {
-        private UserManager userManager { get; }
-
-        public TwoFactorAuthentication(UserManager userManager)
-        {
-            this.userManager = userManager;
+            Console.WriteLine($"Дверь открыта кнопкой с номером {e.Number} в комнате {e.Location}");
         }
 
-        private void SendCode(object sender, UserRegisteredEventArgs e)
+        public void Init(Button button)
         {
-            int code = CodeGenerator.Get();
-            Console.WriteLine($"Код подтверждения: {code} отправлен на почту: {e.Email}");
-        }
-
-        public void TurnOn()
-        {
-            userManager.UserRegistered += SendCode;
-        }
-        
-        public void TurnOff()
-        {
-            userManager.UserRegistered -= SendCode;
-        }
-    }
-
-    public class Advertisement
-    {
-        private readonly UserManager userManager;
-
-        public Advertisement(UserManager userManager)
-        {
-            this.userManager= userManager;
-        }
-
-        private void SendAds(object sender, UserRegisteredEventArgs e)
-        {
-            Console.WriteLine($"Последний день приобрести курс Технология Git по скидке. Отправлено на почту {e.Email}");
-        }
-
-        public void TurnOn()
-        {
-            userManager.UserRegistered += SendAds;
-        }
-
-        public void TurnOff()
-        {
-            userManager.UserRegistered -= SendAds;
+            button.ClickHandler += Open;
         }
     }
 
@@ -101,13 +49,14 @@ namespace CSharpEssentials
     {
         static void Main(string[] args)
         {
-            User user = new User("Ivan Ivanov", "ivanov@yandex.ru", "123321");
-
-            UserManager userManager = new UserManager();
-            var advertisement = new Advertisement(userManager);
-            advertisement.TurnOn();
-
-            userManager.Register(user);
+            Button button = new Button("Столовая#4");
+            Door doorA = new Door();
+            Door doorB = new Door();
+            doorA.Init(button);
+            doorB.Init(button);
+            button.Clicked();
+            //Дверь открыта кнопкой с номером 4 в комнате Столовая
+            //Дверь открыта кнопкой с номером 4 в комнате Столовая
         }
     }
 }

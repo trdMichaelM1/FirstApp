@@ -7,7 +7,7 @@ namespace CSharpEssentials
         private string name;
         private int age;
 
-        public Action<string> MessageHandler;
+        public event Action<string> MessageHandler;
         
         public void SetAge(string input)
         {
@@ -34,7 +34,7 @@ namespace CSharpEssentials
         static void Main(string[] args)
         {
             User user = new User();
-            user.MessageHandler = ShowOnConsole;
+            user.MessageHandler += ShowOnConsole;
             user.MessageHandler += SendEmail;
             user.SetAge(Console.ReadLine());
         }

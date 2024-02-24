@@ -3,45 +3,68 @@ using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
-    public class ButtonClickedEventArgs : EventArgs
+    public interface IUsersStorage
     {
-        public string Location { get; }
-        public int Number { get; }
-
-        public ButtonClickedEventArgs(string identity)
-        {
-            string[] strings = identity.Split('#');
-            Location = strings[0];
-            Number = Convert.ToInt32(strings[1]);
-        }
+        List<User> GetAll();
+        User TryGetById(int id);
+        void Add(User user);
+        bool RemoveById(int id);
+        bool UpdateById(int id, string name, int age);
     }
 
-    public class Button
+    public class User
     {
-        private string identity;
-        public event EventHandler<ButtonClickedEventArgs> ClickHandler;
-
-        public Button(string identity)
-        {
-            this.identity = identity;
-        }
-
-        public void Clicked()
-        {
-            ClickHandler?.Invoke(null, new ButtonClickedEventArgs(identity));
-        }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Age { get; set; }
     }
 
-    public class Door
+    public class UsersInMemoryStorage : IUsersStorage
     {
-        private void Open(object sender, ButtonClickedEventArgs e)
+        private readonly List<User> users;
+        public UsersInMemoryStorage()
         {
-            Console.WriteLine($"Дверь открыта кнопкой с номером {e.Number} в комнате {e.Location}");
+            users = new List<User>();
         }
 
-        public void Init(Button button)
+        public List<User> GetAll()
         {
-            button.ClickHandler += Open;
+            return users;
+        }
+
+        public User TryGetById(int id)
+        {
+            foreach (User user in users)
+            {
+                if (user.Id == id)
+                    return user;
+            }
+            return null;
+        }
+
+        public void Add(User user)
+        {
+            users.Add(user);
+        }
+
+        public bool RemoveById(int id)
+        {
+            User user = TryGetById(id);
+            if (user != null)
+                return users.Remove(user);
+            return false;
+        }
+
+        public bool UpdateById(int id, string name, int age)
+        {
+            User user = TryGetById(id);
+            if (user != null)
+            {
+                user.Name = name;
+                user.Age = age;
+                return true;
+            }
+            return false;
         }
     }
 
@@ -49,14 +72,22 @@ namespace CSharpEssentials
     {
         static void Main(string[] args)
         {
-            Button button = new Button("Столовая#4");
-            Door doorA = new Door();
-            Door doorB = new Door();
-            doorA.Init(button);
-            doorB.Init(button);
-            button.Clicked();
-            //Дверь открыта кнопкой с номером 4 в комнате Столовая
-            //Дверь открыта кнопкой с номером 4 в комнате Столовая
+            IUsersStorage usersStorage = new UsersInMemoryStorage();
+            List<User> users = usersStorage.GetAll();
+            Console.WriteLine(users.Count == 0); // True
+
+            User user = usersStorage.TryGetById(5);
+            Console.WriteLine(user == null); // True
+
+            usersStorage.Add(new User { Id = 1, Name = "Josef", Age = 26 });
+            usersStorage.Add(new User { Id = 2, Name = "Mark", Age = 27 });
+            Console.WriteLine(users.Count == 2); // True
+
+            user = usersStorage.TryGetById(2);
+            Console.WriteLine(user.Name == "Mark"); // True
+
+            Console.WriteLine(usersStorage.UpdateById(2, "Andrew", 27)); // True
+            Console.WriteLine(usersStorage.RemoveById(2)); // True
         }
     }
 }

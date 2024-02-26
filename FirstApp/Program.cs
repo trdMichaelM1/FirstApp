@@ -12,15 +12,12 @@ namespace CSharpEssentials
 
         public int CompareTo(Book other)
         {
-            //if (other.ReleaseYear == ReleaseYear)
-            //    return 0;
-
-            //if (other.ReleaseYear > ReleaseYear)
-            //    return 1;
-
-            //return -1;
-            return -ReleaseYear.CompareTo(other.ReleaseYear);
-
+            int compare = Author.CompareTo(other.Author);
+            if (compare == 0)
+            {
+                return ReleaseYear.CompareTo(other.ReleaseYear);
+            }
+            return compare;
         }
 
         public override string ToString()

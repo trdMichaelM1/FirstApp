@@ -3,72 +3,62 @@ using System.Collections;
 
 namespace CSharpEssentials
 {
-    public class User
+    public class Flat
     {
-        public string Name { get; set; }
-        public int Age { get; set; }
-        public User(string name, int age)
+        public int Number { get; set; }
+        public int RoomsCount { get; set; }
+
+        public override string ToString()
         {
-            Name = name;
-            Age = age;
+            return $"Квартира с номером {Number} имеет {RoomsCount} комнат";
         }
     }
 
-    public class UserStorage : IEnumerable, IEnumerator
+    public class Entrance : IEnumerable
     {
-        private readonly User[] users;
-        private int index = -1;
+        private readonly Flat[] flats;
 
-        public UserStorage(User[] users)
+        public Entrance(Flat[] flats)
         {
-            this.users = users;
+            this.flats = flats;
         }
 
         public IEnumerator GetEnumerator()
         {
-            return this;
+            return new EntranceEnumerator(flats);
+        }
+    }
+
+    public class EntranceEnumerator : IEnumerator
+    {
+        private readonly Flat[] flats;
+        private int idx = -1;
+
+        public EntranceEnumerator(Flat[] flats)
+        {
+            this.flats = flats;
         }
 
-        public object Current
-        {
-            get
-            {
-                return users[index];
-            }
-        }
+        public object Current => flats[idx];
 
         public bool MoveNext()
         {
-            index++;
-            if (index >= users.Length)
-            {
+            idx++;
+            if (idx >= flats.Length)
                 return false;
-            }
             return true;
         }
 
         public void Reset()
         {
-            index = -1;
+            idx = -1;
         }
     }
-
     class Program
     {
         static void Main(string[] args)
         {
-            User user1 = new User("Josef", 26);
-            User user2 = new User("Mark", 27);
-
-            User[] users = new User[] { user2, user1 };
-
-            UserStorage storage = new UserStorage(users);
-
-            foreach(var user in storage)
-            {
-
-                Console.WriteLine(((User)user).Name);
-            }
+            
         }
     }
 }

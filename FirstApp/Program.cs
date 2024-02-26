@@ -1,39 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
-    public interface IStudent
+    public interface IInterfaceA
     {
-        int Year { get; set; }
-        void DoHomework();
+        void Method1();
     }
 
-    public interface IWorker
+    public interface IInterfaceB
     {
-        int Salary { get; set; }
-        void Work();
+        void Method1();
     }
 
-    public class Person
+    public class MyClass : IInterfaceA, IInterfaceB
     {
-        public string Name { get; set; }
-        public int Age { get; set; }
-    }
+        void IInterfaceA.Method1()
+        {
+            Console.WriteLine("IInterfaceA.Method1");
+        }
 
-    public class Student : Person, IStudent, IWorker
-    {
-        public int Year { get; set; }
-        public void DoHomework() { }
-        public int Salary { get; set; }
-        public void Work() { }
-    }
+        void IInterfaceB.Method1()
+        {
+            Console.WriteLine("IInterfaceB.Method1");
+        }
 
+        public void Method1()
+        {
+            Console.WriteLine("MyClass.Method1");
+        }
+
+    }
     class Program
     {
         static void Main(string[] args)
         {
+            MyClass myClass = new MyClass();
+            myClass.Method1();
 
+            IInterfaceA a = myClass;
+            a.Method1();
+
+            IInterfaceB b = myClass;
+            b.Method1();
         }
     }
 }

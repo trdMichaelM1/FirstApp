@@ -4,33 +4,38 @@ using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
-    public class Flat
+    public class Product
     {
-        public int Number { get; set; }
-        public int RoomsCount { get; set; }
+        public string Name { get; set; } // Имя 
+        public double Price { get; set; } // Цена
+        public int Quantity { get; set; } // Количество
 
         public override string ToString()
         {
-            return $"Квартира с номером {Number} имеет {RoomsCount} комнат";
+            return $"Название: {Name}, Цена: {Price}, Количество: {Quantity}";
         }
     }
 
-    public class Entrance : IEnumerable<Flat>, IEnumerator<Flat>
+    public class Store : IEnumerable<Product>, IEnumerator<Product>
     {
-        private readonly Flat[] flats;
-        private int index = -1;
+        private readonly List<Product> products;
+        private int idx = -1;
 
-        public Entrance(Flat[] flats)
+        public Store()
         {
-            this.flats = flats;
+            products = new List<Product>();
         }
 
-        public Flat Current => flats[index];
+        public void AddProduct(Product product)
+        {
+            products.Add(product);
+        }
 
-        object IEnumerator.Current => flats[index];
+        public Product Current => products[idx];
 
+        object IEnumerator.Current => products[idx];
 
-        public IEnumerator<Flat> GetEnumerator()
+        public IEnumerator<Product> GetEnumerator()
         {
             return this;
         }
@@ -42,44 +47,29 @@ namespace CSharpEssentials
 
         public bool MoveNext()
         {
-            index++;
-            return index < flats.Length;
+            idx++;
+            return idx < products.Count;
         }
 
         public void Reset()
         {
-            index = -1;
+            idx = -1;
         }
 
         public void Dispose() { }
     }
-
     class Program
     {
         static void Main(string[] args)
         {
-            var entrance = new Entrance(new Flat[]
-            {
-                new Flat
-                {
-                    Number = 1,
-                    RoomsCount = 2
-                },
-                new Flat
-                {
-                    Number = 2,
-                    RoomsCount = 3
-                },
-                new Flat
-                {
-                    Number = 26,
-                    RoomsCount = 1
-                },
-            });
+            Store store = new Store();
+            store.AddProduct(new Product { Name = "Чайник", Price = 1000, Quantity = 3 });
+            store.AddProduct(new Product { Name = "Мультиварка", Price = 3000, Quantity = 7 });
+            store.AddProduct(new Product { Name = "Пылесос", Price = 7500, Quantity = 15 });
 
-            foreach (var item in entrance)
+            foreach (var product in store)
             {
-                Console.WriteLine(item.Number);
+                Console.WriteLine(product);
             }
         }
     }

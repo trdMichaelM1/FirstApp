@@ -4,20 +4,31 @@ using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
-    public class Book : IEquatable<Book>
+    public class Product : IEquatable<Product>
     {
         public string Name { get; set; }
-        public string Author { get; set; }
-        public int ReleaseYear { get; set; }
+        public int Price { get; set; }
+        public string Category { get; set; }
 
-        public bool Equals(Book other)
+        public Product(string name, int price, string category)
         {
-            return Name.Equals(other.Name) && Author.Equals(other.Author) && ReleaseYear.Equals(other.ReleaseYear);
+            Name = name;
+            Price = price;
+            Category = category;
         }
 
         public override string ToString()
         {
-            return $"{Name}, {Author}, {ReleaseYear}";
+            return $"Product: Название: {Name}, Цена: {Price}, Категория: {Category}";
+        }
+
+        public bool Equals(Product other)
+        {
+            bool name = Name == other.Name;
+            bool price = Price == other.Price;
+            bool category = Category == other.Category;
+
+            return (name && price) || (name && category) || (price && category);
         }
     }
 
@@ -25,7 +36,12 @@ namespace CSharpEssentials
     {
         static void Main(string[] args)
         {
+            Product product1 = new Product("Яблоко", 200, "Фрукты");
+            Product product2 = new Product("Помидор", 150, "Овощи");
+            Product product3 = new Product("Яблоко", 150, "Фрукты");
 
+            Console.WriteLine(product1.Equals(product3)); // True
+            Console.WriteLine(product2.Equals(product3)); // False
         }
     }
 }

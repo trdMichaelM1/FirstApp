@@ -4,60 +4,82 @@ using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
-    public class Car
+    public class Flat
     {
-        public string Model { get; set; }
-        public decimal Price { get; set; }
+        public int Number { get; set; }
+        public int RoomsCount { get; set; }
 
         public override string ToString()
         {
-            return $"{Model}, Цена: {Price}";
+            return $"Квартира с номером {Number} имеет {RoomsCount} комнат";
         }
     }
 
-    public class CarShowroom
+    public class Entrance : IEnumerable<Flat>, IEnumerator<Flat>
     {
-        private readonly List<Car> cars;
-        private int idx = -1;
-        public CarShowroom(List<Car> cars)
+        private readonly Flat[] flats;
+        private int index = -1;
+
+        public Entrance(Flat[] flats)
         {
-            this.cars = cars;
+            this.flats = flats;
         }
 
-        public Car Current => cars[idx];
+        public Flat Current => flats[index];
 
-        public CarShowroom GetEnumerator()
+        object IEnumerator.Current => flats[index];
+
+
+        public IEnumerator<Flat> GetEnumerator()
+        {
+            return this;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return this;
         }
 
         public bool MoveNext()
         {
-            idx++;
-            return idx < cars.Count;
+            index++;
+            return index < flats.Length;
         }
 
         public void Reset()
         {
-            idx = -1;
+            index = -1;
         }
+
+        public void Dispose() { }
     }
 
     class Program
     {
         static void Main(string[] args)
         {
-            List<Car> myCars = new List<Car>
+            var entrance = new Entrance(new Flat[]
             {
-               new Car { Model = "Lada", Price = 250000 },
-               new Car { Model = "Mercedes", Price = 500000 },
-               new Car { Model = "BMW", Price = 350000}
-            };
+                new Flat
+                {
+                    Number = 1,
+                    RoomsCount = 2
+                },
+                new Flat
+                {
+                    Number = 2,
+                    RoomsCount = 3
+                },
+                new Flat
+                {
+                    Number = 26,
+                    RoomsCount = 1
+                },
+            });
 
-            CarShowroom shop = new CarShowroom(myCars);
-            foreach (var car in shop)
+            foreach (var item in entrance)
             {
-                Console.WriteLine(car);
+                Console.WriteLine(item.Number);
             }
         }
     }

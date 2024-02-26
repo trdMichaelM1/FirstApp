@@ -1,47 +1,74 @@
 ﻿using System;
+using System.Collections;
 
 namespace CSharpEssentials
 {
-    public interface IInterfaceA
+    public class User
     {
-        void Method1();
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public User(string name, int age)
+        {
+            Name = name;
+            Age = age;
+        }
     }
 
-    public interface IInterfaceB
+    public class UserStorage : IEnumerable, IEnumerator
     {
-        void Method1();
+        private readonly User[] users;
+        private int index = -1;
+
+        public UserStorage(User[] users)
+        {
+            this.users = users;
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return this;
+        }
+
+        public object Current
+        {
+            get
+            {
+                return users[index];
+            }
+        }
+
+        public bool MoveNext()
+        {
+            index++;
+            if (index >= users.Length)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public void Reset()
+        {
+            index = -1;
+        }
     }
 
-    public class MyClass : IInterfaceA, IInterfaceB
-    {
-        void IInterfaceA.Method1()
-        {
-            Console.WriteLine("IInterfaceA.Method1");
-        }
-
-        void IInterfaceB.Method1()
-        {
-            Console.WriteLine("IInterfaceB.Method1");
-        }
-
-        public void Method1()
-        {
-            Console.WriteLine("MyClass.Method1");
-        }
-
-    }
     class Program
     {
         static void Main(string[] args)
         {
-            MyClass myClass = new MyClass();
-            myClass.Method1();
+            User user1 = new User("Josef", 26);
+            User user2 = new User("Mark", 27);
 
-            IInterfaceA a = myClass;
-            a.Method1();
+            User[] users = new User[] { user2, user1 };
 
-            IInterfaceB b = myClass;
-            b.Method1();
+            UserStorage storage = new UserStorage(users);
+
+            foreach(var user in storage)
+            {
+
+                Console.WriteLine(((User)user).Name);
+            }
         }
     }
 }

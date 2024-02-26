@@ -1,32 +1,32 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
-    public class Flat
+    public class Car
     {
-        public int Number { get; set; }
-        public int RoomsCount { get; set; }
+        public string Model { get; set; }
+        public decimal Price { get; set; }
 
         public override string ToString()
         {
-            return $"Квартира с номером {Number} имеет {RoomsCount} комнат";
+            return $"{Model}, Цена: {Price}";
         }
     }
 
-    public class Entrance
+    public class CarShowroom
     {
-        private readonly Flat[] flats;
+        private readonly List<Car> cars;
         private int idx = -1;
-
-        public Entrance(Flat[] flats)
+        public CarShowroom(List<Car> cars)
         {
-            this.flats = flats;
+            this.cars = cars;
         }
 
-        public Flat Current => flats[idx];
+        public Car Current => cars[idx];
 
-        public Entrance GetEnumerator()
+        public CarShowroom GetEnumerator()
         {
             return this;
         }
@@ -34,7 +34,7 @@ namespace CSharpEssentials
         public bool MoveNext()
         {
             idx++;
-            return idx < flats.Length;
+            return idx < cars.Count;
         }
 
         public void Reset()
@@ -47,7 +47,18 @@ namespace CSharpEssentials
     {
         static void Main(string[] args)
         {
-            
+            List<Car> myCars = new List<Car>
+            {
+               new Car { Model = "Lada", Price = 250000 },
+               new Car { Model = "Mercedes", Price = 500000 },
+               new Car { Model = "BMW", Price = 350000}
+            };
+
+            CarShowroom shop = new CarShowroom(myCars);
+            foreach (var car in shop)
+            {
+                Console.WriteLine(car);
+            }
         }
     }
 }

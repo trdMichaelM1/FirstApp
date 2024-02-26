@@ -14,7 +14,7 @@ namespace CSharpEssentials
         }
     }
 
-    public class Entrance : IEnumerable, IEnumerator
+    public class Entrance
     {
         private readonly Flat[] flats;
         private int idx = -1;
@@ -24,9 +24,9 @@ namespace CSharpEssentials
             this.flats = flats;
         }
 
-        public object Current => flats[idx];
+        public Flat Current => flats[idx];
 
-        public IEnumerator GetEnumerator()
+        public Entrance GetEnumerator()
         {
             return this;
         }

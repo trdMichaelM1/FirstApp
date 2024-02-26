@@ -14,39 +14,27 @@ namespace CSharpEssentials
         }
     }
 
-    public class Entrance : IEnumerable
+    public class Entrance : IEnumerable, IEnumerator
     {
         private readonly Flat[] flats;
+        private int idx = -1;
 
         public Entrance(Flat[] flats)
         {
             this.flats = flats;
         }
 
+        public object Current => flats[idx];
+
         public IEnumerator GetEnumerator()
         {
-            return new EntranceEnumerator(flats);
+            return this;
         }
-    }
-
-    public class EntranceEnumerator : IEnumerator
-    {
-        private readonly Flat[] flats;
-        private int idx = -1;
-
-        public EntranceEnumerator(Flat[] flats)
-        {
-            this.flats = flats;
-        }
-
-        public object Current => flats[idx];
 
         public bool MoveNext()
         {
             idx++;
-            if (idx >= flats.Length)
-                return false;
-            return true;
+            return idx < flats.Length;
         }
 
         public void Reset()
@@ -54,6 +42,7 @@ namespace CSharpEssentials
             idx = -1;
         }
     }
+
     class Program
     {
         static void Main(string[] args)

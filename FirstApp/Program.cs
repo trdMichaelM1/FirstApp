@@ -4,31 +4,26 @@ using System.Collections.Generic;
 
 namespace CSharpEssentials
 {
-    public class Product : IEquatable<Product>
+    public class Point : IEquatable<Point>
     {
-        public string Name { get; set; }
-        public int Price { get; set; }
-        public string Category { get; set; }
-
-        public Product(string name, int price, string category)
-        {
-            Name = name;
-            Price = price;
-            Category = category;
-        }
+        public double Latitude { get; set; } // Широта
+        public double Longitude { get; set; } // Долгота
 
         public override string ToString()
         {
-            return $"Product: Название: {Name}, Цена: {Price}, Категория: {Category}";
+            return $" Координаты точки: {Latitude} широты, {Longitude} долготы";
         }
 
-        public bool Equals(Product other)
+        public Point(double Latitude, double Longitude)
         {
-            bool name = Name == other.Name;
-            bool price = Price == other.Price;
-            bool category = Category == other.Category;
+            this.Latitude = Latitude;
+            this.Longitude = Longitude;
+        }
 
-            return (name && price) || (name && category) || (price && category);
+        public bool Equals(Point other)
+        {
+            int difference = 5;
+            return Math.Abs(other.Latitude - Latitude) <= difference && Math.Abs(other.Longitude - Longitude) <= difference;
         }
     }
 
@@ -36,12 +31,11 @@ namespace CSharpEssentials
     {
         static void Main(string[] args)
         {
-            Product product1 = new Product("Яблоко", 200, "Фрукты");
-            Product product2 = new Product("Помидор", 150, "Овощи");
-            Product product3 = new Product("Яблоко", 150, "Фрукты");
-
-            Console.WriteLine(product1.Equals(product3)); // True
-            Console.WriteLine(product2.Equals(product3)); // False
+            Point point1 = new Point(1, 2);
+            Point point2 = new Point(4, 2);
+            Point point3 = new Point(15, 5);
+            Console.WriteLine(point1.Equals(point2)); // True
+            Console.WriteLine(point1.Equals(point3)); // False
         }
     }
 }

@@ -2,33 +2,39 @@
 
 namespace CSharpEssentials
 {
-    public enum Colors
-    {
-        Red,
-        Black,
-        Yellow,
-        White
-    }
-
-    public enum Languages
-    {
-        English,
-        Russian
-    }
-
     class Program
     {
-        public static string ColorTranslate(Colors color, Languages language)
+        static void Do()
         {
-            string[] colors = new string[] { "Красный", "Черный", "Желтый", "Белый" };
-            if (language == Languages.English)
-                return color.ToString();
-            return colors[(int)color];
+            string[] data = Read();
+            // Do
+            Print(data);
         }
+        static string[] Read()
+        {
+            string line = Console.ReadLine();
+            return line.Split();
+        }
+
+        static void Print(string[] array)
+        {
+            for (int i = 0; i <= array.Length; i++)
+            {
+                Console.Write(array[i] + " ");
+            }
+        }
+
         static void Main(string[] args)
         {
-            Console.WriteLine(ColorTranslate(Colors.Red, Languages.Russian)); // Красный
-            Console.WriteLine(ColorTranslate(Colors.Red, Languages.English)); // Red
+            try
+            {
+                int x = 10;
+                Do();
+            }
+            catch
+            {
+                Console.WriteLine("Упс! Произошло исключение!");
+            }
         }
     }
 }

@@ -2,26 +2,33 @@
 
 namespace CSharpEssentials
 {
-    public enum Side
+    public enum Colors
     {
-        North, // север
-        East,  // восток
-        South, // юг
-        West   // запад
+        Red,
+        Black,
+        Yellow,
+        White
+    }
+
+    public enum Languages
+    {
+        English,
+        Russian
     }
 
     class Program
     {
-        public static void GoTo(Side side, int meters)
+        public static string ColorTranslate(Colors color, Languages language)
         {
-            Console.WriteLine($"Go {side} for {meters} meters");
+            string[] colors = new string[] { "Красный", "Черный", "Желтый", "Белый" };
+            if (language == Languages.English)
+                return color.ToString();
+            return colors[(int)color];
         }
         static void Main(string[] args)
         {
-            GoTo(Side.East, 50);
-            GoTo(Side.South, 20);
-            GoTo(Side.West, 30);
-            Console.WriteLine("You found it!");
+            Console.WriteLine(ColorTranslate(Colors.Red, Languages.Russian)); // Красный
+            Console.WriteLine(ColorTranslate(Colors.Red, Languages.English)); // Red
         }
     }
 }

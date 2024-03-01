@@ -2,23 +2,52 @@
 
 namespace CSharpEssentials
 {
-    public class Phone
+    public class UserAgeInvalidException : Exception
     {
-        public string Name { get; }
-        public decimal Cost { get; }
-        public Phone(string name, decimal cost)
+        public int InvalidAge { get; }
+        public UserAgeInvalidException() { }
+        public UserAgeInvalidException(string m, int invalidAge) : base(m)
         {
-            // здесь поддержать ограничения параметров
-            if (name == null)
-                throw new ArgumentNullException("Имя не может быть равно null!");
+            InvalidAge = invalidAge;
+        }
+    }
 
-            if (name.Length < 2 || name.Length > 50)
-                throw new ArgumentException("Имя должно содержать от 2 до 50 символов!");
+    public class User
+    {
+        private string name;
+        private int age;
 
-            if (cost < 1)
-                throw new ArgumentException("Значение цены должно быть положительным!");
+        public string Name
+        {
+            get => name;
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new Exception("Имя не может быть пустым!");
+                }
+                name = value;
+            }
+        }
+
+        public int Age
+        {
+            get => age;
+            set
+            {
+                if (value < 18 || value > 150)
+                {
+                    // инициирование своего исклюения
+                    throw new UserAgeInvalidException("Возраст должен быть от 18 до 150", value);
+                }
+                age = value;
+            }
+        }
+
+        public User(string name, int age)
+        {
             Name = name;
-            Cost = cost;
+            Age = age;
         }
     }
 
@@ -26,7 +55,18 @@ namespace CSharpEssentials
     {
         static void Main(string[] args)
         {
+            try
+            {
+                User user = new User("Josef", 266);
+            }
+            catch (UserAgeInvalidException e)
+            {
+                // логика!
 
+                // получение дополнительной информации
+                Console.WriteLine(e.InvalidAge);
+
+            }
         }
 
     }

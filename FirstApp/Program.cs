@@ -2,70 +2,55 @@
 
 namespace CSharpEssentials
 {
-    public class UserAgeInvalidException : Exception
+    public class InvalidPasswordException : Exception
     {
-        public int InvalidAge { get; }
-        public UserAgeInvalidException() { }
-        public UserAgeInvalidException(string m, int invalidAge) : base(m)
-        {
-            InvalidAge = invalidAge;
-        }
+        public InvalidPasswordException() { }
+        public InvalidPasswordException(string message) : base(message) { }
     }
 
     public class User
     {
-        private string name;
-        private int age;
+        public string Name;
+        private string password;
 
-        public string Name
-        {
-            get => name;
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                {
-                    throw new Exception("Имя не может быть пустым!");
-                }
-                name = value;
-            }
-        }
-
-        public int Age
-        {
-            get => age;
-            set
-            {
-                if (value < 18 || value > 150)
-                {
-                    // инициирование своего исклюения
-                    throw new UserAgeInvalidException("Возраст должен быть от 18 до 150", value);
-                }
-                age = value;
-            }
-        }
-
-        public User(string name, int age)
+        public User(string name, string password) 
         {
             Name = name;
-            Age = age;
+            Password = password;
+        }
+        public string Password
+        {
+            get => password;
+            set
+            {
+                if (value.Length < 5)
+                    throw new InvalidPasswordException("Слишком короткий пароль");
+
+                password = value;
+            }
         }
     }
-
     class Program
     {
         static void Main(string[] args)
         {
             try
             {
-                User user = new User("Josef", 266);
+                User user = new User("Nik", "1234");
             }
-            catch (UserAgeInvalidException e)
+            catch(InvalidPasswordException e)
             {
-                // логика!
+                Console.WriteLine(e.Message); // Слишком короткий пароль
+            }
 
-                // получение дополнительной информации
-                Console.WriteLine(e.InvalidAge);
-
+            try
+            {
+                User user = new User("May", "9736295637");
+                Console.WriteLine(user.Password); //9736295637
+            }
+            catch(InvalidPasswordException e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
 

@@ -8,19 +8,8 @@ namespace CSharpEssentials
     {
         static void Main(string[] args)
         {
-            int a = 0;
-            try
-            {
-                Console.WriteLine(1 / a);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine(2);
-            }
-            finally
-            {
-                Console.WriteLine(3);
-            }
+            int size = sizeof(decimal);
+            Console.WriteLine(size);
         }
 
     }
